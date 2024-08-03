@@ -1,0 +1,17 @@
+.wrapperPage {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.page {
+    padding: 10px;
+    border: 1px solid teal;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.currentPage {
+    border: 2px solid orange;
+    font-weight: bold;
+}
