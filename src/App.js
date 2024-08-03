@@ -10,10 +10,9 @@ function App() {
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [column, setColumn] = useState('');
+  const [query, setQuery] = useState('');
 
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(15);
@@ -28,6 +27,14 @@ function App() {
           setTotalUsers(data.total);
           setTotalPages(getPageCount(data.total, limit));
         });
+    } else {
+      fetch(`https://dummyjson.com/users/filter?limit=${limit}&skip=${(page - 1) * limit}&key=${column}&value=${query}`)
+        .then(response => response.json())
+        .then(data => {
+          setSearchResults(data.users);
+          setTotalUsers(data.total);
+          setTotalPages(getPageCount(data.total, limit));
+        });
     }
   }, [page, limit, isSearching]);
 
@@ -37,13 +44,8 @@ function App() {
 
   const handleSearch = (query, column) => {
     setIsSearching(true);
-    fetch(`https://dummyjson.com/users/filter?limit=${limit}&skip=${(page - 1) * limit}&key=${column}&value=${query}`)
-      .then(response => response.json())
-      .then(data => {
-        setSearchResults(data.users);
-        setTotalUsers(data.total);
-        setTotalPages(getPageCount(data.total, limit));
-      });
+    setColumn(column);
+    setQuery(query);
   }
 
   const clearSearch = () => {
